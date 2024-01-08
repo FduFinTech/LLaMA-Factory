@@ -220,7 +220,7 @@ def get_template_and_fix_tokenizer(
     if name is None: # for pre-training
         return None
 
-    template = templates.get(name, None)
+    template = templates.get(name, None) # templates object continans all templates, such as "alpaca", "aquila", etc.
     assert template is not None, "Template {} does not exist.".format(name)
 
     stop_words = template.stop_words

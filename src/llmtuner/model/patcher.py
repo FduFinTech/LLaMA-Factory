@@ -191,7 +191,7 @@ def _prepare_model_for_training(
     r"""
     Includes:
         (1) cast the layernorm in fp32
-        (2) make output embedding layer require grads
+        (2) make output embedding layer require grads # TODO: need to check
         (3) add the upcasting of the lm_head in fp32
     Inspired by: https://github.com/huggingface/peft/blob/v0.7.1/src/peft/utils/other.py#L72
     """
@@ -234,7 +234,7 @@ def patch_config(
     if model_args.compute_dtype is None: # priority: bf16 > fp16 > fp32
         model_args.compute_dtype = infer_optim_dtype(model_dtype=getattr(config, "torch_dtype", None))
 
-    if getattr(config, "model_type", None) == "qwen":
+    if getattr(config, "model_type", None) == "qwen": # set config.bf16=True, config.fp16=config.fp32=False when use "bf16" in qwen
         for dtype_name, dtype in [("fp16", torch.float16), ("bf16", torch.bfloat16), ("fp32", torch.float32)]:
             setattr(config, dtype_name, model_args.compute_dtype == dtype)
 

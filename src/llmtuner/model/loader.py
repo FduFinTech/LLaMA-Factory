@@ -36,7 +36,7 @@ def load_model_and_tokenizer(
 
     Support both training and inference.
     """
-
+    # download model from ModeScope
     try_download_model_from_ms(model_args)
 
     config_kwargs = {
@@ -53,10 +53,10 @@ def load_model_and_tokenizer(
         padding_side="right",
         **config_kwargs
     )
-    patch_tokenizer(tokenizer)
+    patch_tokenizer(tokenizer) # Patches the tokenizer to ensure it has the appropriate '_pad' method.
 
     config = AutoConfig.from_pretrained(model_args.model_name_or_path, **config_kwargs)
-    patch_config(config, tokenizer, model_args, config_kwargs, is_trainable)
+    patch_config(config, tokenizer, model_args, config_kwargs, is_trainable) # Format config
 
     model = None
     if is_trainable and model_args.use_unsloth:
@@ -92,7 +92,7 @@ def load_model_and_tokenizer(
             **config_kwargs
         )
 
-    patch_model(model, tokenizer, model_args, is_trainable)
+    patch_model(model, tokenizer, model_args, is_trainable) # Format Config
     register_autoclass(config, model, tokenizer)
 
     model = init_adapter(model, model_args, finetuning_args, is_trainable)
