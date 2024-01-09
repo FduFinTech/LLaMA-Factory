@@ -3,7 +3,7 @@ deepspeed --num_gpus 4 --master_port=9901 src/train_bash.py \
     --stage sft \
     --do_train \
     --model_name_or_path Qwen/Qwen-7B \
-    --dataset alpaca_gpt4_zh \
+    --dataset finlaw_dataset \
     --template qwen \
     --finetuning_type lora \
     --lora_target c_attn \

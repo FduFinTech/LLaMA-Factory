@@ -2,7 +2,7 @@ python src/train_bash.py \
     --stage sft \
     --do_train \
     --model_name_or_path Qwen/Qwen-7B \
-    --dataset alpaca_gpt4_zh \
+    --dataset zh_law_instruction \
     --template qwen \
     --finetuning_type lora \
     --quantization_bit 4 \
@@ -18,4 +18,5 @@ python src/train_bash.py \
     --learning_rate 5e-5 \
     --num_train_epochs 3.0 \
     --plot_loss \
+    --report_to none\
     --bf16

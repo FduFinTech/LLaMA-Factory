@@ -52,21 +52,21 @@ class BelleMultiturn(datasets.GeneratorBasedBuilder):
                 conversations = []
                 prompt = data["instruction"].strip()
                 response = data["output"].strip()
-
-                assist_idx = prompt.rfind("Assistant:")
+                # First insert the last query and response
+                assist_idx = prompt.rfind("Assistant:") # Returns the position where the string last appeared
                 human_idx = prompt.rfind("Human:")
                 query = prompt[human_idx+6:assist_idx].strip()
                 prompt = prompt[:human_idx].strip()
                 conversations.insert(0, {"from": "gpt", "value": response})
                 conversations.insert(0, {"from": "human", "value": query})
-
+                # Then insert the rest of the query and response to the front
                 while prompt.rfind("Assistant:") != -1:
                     assist_idx = prompt.rfind("Assistant:")
                     human_idx = prompt.rfind("Human:")
                     if human_idx != -1:
                         old_query = prompt[human_idx+6:assist_idx].strip()
                         old_resp = prompt[assist_idx+10:].strip()
-                        conversations.insert(0, {"from": "gpt", "value": old_resp})
+                        conversations.insert(0, {"from": "gpt", "value": old_resp}) # insert to the front
                         conversations.insert(0, {"from": "human", "value": old_query})
                     else:
                         break

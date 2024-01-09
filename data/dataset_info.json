@@ -58,6 +58,24 @@
       "history": "history"
     }
   },
+  "zh_law_instruction": {
+    "file_name": "zh_law_instruction.json",
+    "columns": {
+      "messages": "conversations",
+      "role": "from",
+      "content": "value"
+    },
+    "formatting": "sharegpt"
+  },
+  "finlaw_dataset": {
+    "script_url": "finlaw_dataset",
+    "columns": {
+      "messages": "conversations",
+      "role": "from",
+      "content": "value"
+    },
+    "formatting": "sharegpt"
+  },
   "guanaco": {
     "hf_hub_url": "JosephusCheung/GuanacoDataset",
     "ms_hub_url": "AI-ModelScope/GuanacoDataset"

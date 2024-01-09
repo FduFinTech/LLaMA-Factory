@@ -34,7 +34,7 @@ def get_dataset(
 
     for dataset_attr in data_args.dataset_list:
         logger.info("Loading dataset {}...".format(dataset_attr))
-
+        # load dataset
         data_path, data_name, data_dir, data_files = None, None, None, None
         if dataset_attr.load_from in ["hf_hub", "ms_hub"]:
             data_path = dataset_attr.dataset_name
@@ -100,7 +100,7 @@ def get_dataset(
         if max_samples is not None: # truncate dataset
             dataset = dataset.select(range(min(len(dataset), max_samples)))
 
-        def convert_format(examples: Dict[str, List[Any]]) -> Dict[str, List[Any]]:
+        def convert_format(examples: Dict[str, List[Any]]) -> Dict[str, List[Any]]: # TODO: need to add some templates
             # convert dataset from sharegpt format to alpaca format
             outputs = {"prompt": [], "query": [], "response": [], "history": [], "system": []}
             for i, msg_list in enumerate(examples[dataset_attr.messages]):
@@ -128,7 +128,7 @@ def get_dataset(
                     outputs["response"].append(msg_pairs[-1][1])
                     outputs["history"].append(msg_pairs[:-1] if len(msg_pairs) > 1 else None)
                     outputs["system"].append(examples[dataset_attr.system][i] if dataset_attr.system else "")
-
+            # outputs: {'prompt': ['prompt1', 'prompt2', ...], 'query': ['query1', 'query2', ...], 'response': ['response1', 'response2', ...], 'history': [['history1', 'history2', ...], ['history1', 'history2', ...], ...], 'system': ['system1', 'system2', ...]}
             return outputs
 
         if dataset_attr.formatting == "sharegpt": # convert format
@@ -143,7 +143,7 @@ def get_dataset(
 
             dataset = dataset.map(
                 convert_format,
-                batched=True,
+                batched=True, # Provide batch of examples to `function`. 'prompt': ['prompt1', 'prompt2', ...]->[['prompt1', 'prompt2', ...], ['prompt1', 'prompt2', ...], ...]
                 remove_columns=column_names,
                 **kwargs
             )
