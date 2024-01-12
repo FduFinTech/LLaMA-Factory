@@ -18,5 +18,5 @@ python src/train_bash.py \
     --learning_rate 5e-5 \
     --num_train_epochs 3.0 \
     --plot_loss \
-    --report_to none\
-    --bf16
+    --report_to none \
+    --bf16 
