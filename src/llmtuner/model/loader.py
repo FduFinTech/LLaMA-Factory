@@ -48,7 +48,7 @@ def load_model_and_tokenizer(
 
     tokenizer = AutoTokenizer.from_pretrained(
         model_args.model_name_or_path,
-        use_fast=model_args.use_fast_tokenizer,
+        use_fast=model_args.use_fast_tokenizer, # TODO: use_fast_tokenizer is not supported by all models
         split_special_tokens=model_args.split_special_tokens,
         padding_side="right",
         **config_kwargs
