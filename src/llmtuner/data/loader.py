@@ -172,7 +172,7 @@ def get_dataset(
 
         dataset = dataset.map(
             preprocess_func,
-            batched=True,
+            batched=True, # Provide batch of examples to `function`. 'prompt': ['prompt1', 'prompt2', ...]->[['prompt1', 'prompt2', ...], ['prompt1', 'prompt2', ...], ...]
             remove_columns=column_names,
             **kwargs
         )
@@ -189,3 +189,34 @@ def get_dataset(
                 raise RuntimeError("Empty dataset!")
 
         return dataset
+
+# def convert_format(examples: Dict[str, List[Any]]) -> Dict[str, List[Any]]: # TODO: need to add some templates
+#     # convert dataset from sharegpt format to alpaca format
+#     outputs = {"prompt": [], "query": [], "response": [], "history": [], "system": []}
+#     for i, msg_list in enumerate(examples[dataset_attr.messages]):
+#         msg_list = msg_list[:len(msg_list) // 2 * 2] # should be multiples of 2
+#         if len(msg_list) == 0:
+#             continue
+
+#         msg_pairs = []
+#         user_role, assistant_role = None, None
+#         for idx in range(0, len(msg_list), 2):
+#             if user_role is None and assistant_role is None:
+#                 user_role = msg_list[idx][dataset_attr.role]
+#                 assistant_role = msg_list[idx + 1][dataset_attr.role]
+#             else:
+#                 if (
+#                     msg_list[idx][dataset_attr.role] != user_role
+#                     or msg_list[idx+1][dataset_attr.role] != assistant_role
+#                 ):
+#                     raise ValueError("Only accepts conversation in u/a/u/a/u/a order.")
+#             msg_pairs.append((msg_list[idx][dataset_attr.content], msg_list[idx + 1][dataset_attr.content]))
+
+#         if len(msg_pairs) != 0:
+#             outputs["prompt"].append(msg_pairs[-1][0])
+#             outputs["query"].append("")
+#             outputs["response"].append(msg_pairs[-1][1])
+#             outputs["history"].append(msg_pairs[:-1] if len(msg_pairs) > 1 else None)
+#             outputs["system"].append(examples[dataset_attr.system][i] if dataset_attr.system else "")
+#     # outputs: {'prompt': ['prompt1', 'prompt2', ...], 'query': ['query1', 'query2', ...], 'response': ['response1', 'response2', ...], 'history': [['history1', 'history2', ...], ['history1', 'history2', ...], ...], 'system': ['system1', 'system2', ...]}
+#     return outputs
