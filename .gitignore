@@ -170,3 +170,7 @@ cache/
 # model output dir
 model_output/
 wandb/
+
+# secret file
+prompt.py
+Law_FinGPT_datasets
